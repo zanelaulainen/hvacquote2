@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HVAC Pricing Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .step {
+            display: none;
+        }
+        .step.active {
+            display: block;
+        }
+        .radio-options {
+            margin: 15px 0;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .radio-option img {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+        }
+        .radio-option input {
+            display: none;
+        }
+        .radio-option:hover, .radio-option input:checked + label {
+            border-color: #007BFF;
+            background-color: #e0f0ff;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e0ffe0;
+            border: 1px solid #b2ffb2;
+            border-radius: 4px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HVAC Pricing Calculator</h1>
+        <div id="step1" class="step active">
+            <h2>1. Select Square Footage</h2>
+            <div class="radio-options">
+                <div class="radio-option">
+                    <input type="radio" id="sq1" name="squareFootage" value="750">
+                    <label for="sq1">1.5 ton: 750 - 900 sq. ft.</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="sq2" name="squareFootage" value="1000">
+                    <label for="sq2">2 ton: 1,000 - 1,200 sq. ft.</label>
+                </div>
+            </div>
+            <button onclick="nextStep()">Next</button>
+        </div>
+        <div id="result" class="result" style="display: none;">Calculated result here.</div>
+    </div>
+    <script>
+        function nextStep() {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
