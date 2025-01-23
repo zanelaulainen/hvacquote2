@@ -122,6 +122,25 @@
             color: #28a745;
             margin-right: 10px;
         }
+        .form-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        }
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -169,27 +188,27 @@
         </div>
 
         <div id="step2" class="step">
-            <h2>2. Where is the Unit Placement?</h2>
+            <h2>2. What Type of Unit?</h2>
             <div class="tile-options">
                 <div class="tile-option">
-                    <input type="radio" id="roof" name="unitPlacement" value="Roof" onclick="selectAndNext(2, true)">
-                    <label for="roof">
-                        <img src="roof_icon.png" alt="Roof Icon">
-                        <p>Roof</p>
+                    <input type="radio" id="split" name="unitType" value="Split System" onclick="selectAndNext(2, true)">
+                    <label for="split">
+                        <img src="split_system_icon.png" alt="Split System Icon">
+                        <p>Split System</p>
                     </label>
                 </div>
                 <div class="tile-option">
-                    <input type="radio" id="closet" name="unitPlacement" value="Closet" onclick="selectAndNext(2, true)">
-                    <label for="closet">
-                        <img src="closet_icon.png" alt="Closet Icon">
-                        <p>Closet</p>
+                    <input type="radio" id="mini" name="unitType" value="Mini Split" onclick="selectAndNext(2, true)">
+                    <label for="mini">
+                        <img src="mini_split_icon.png" alt="Mini Split Icon">
+                        <p>Mini Split</p>
                     </label>
                 </div>
                 <div class="tile-option">
-                    <input type="radio" id="attic" name="unitPlacement" value="Attic" onclick="selectAndNext(2, true)">
-                    <label for="attic">
-                        <img src="attic_icon.png" alt="Attic Icon">
-                        <p>Attic</p>
+                    <input type="radio" id="packaged" name="unitType" value="Packaged System" onclick="selectAndNext(2, true)">
+                    <label for="packaged">
+                        <img src="packaged_system_icon.png" alt="Packaged System Icon">
+                        <p>Packaged System</p>
                     </label>
                 </div>
             </div>
@@ -197,27 +216,27 @@
         </div>
 
         <div id="step3" class="step">
-            <h2>3. What Type of Unit?</h2>
+            <h2>3. Where is the Unit Placement?</h2>
             <div class="tile-options">
                 <div class="tile-option">
-                    <input type="radio" id="split" name="unitType" value="Split System" onclick="selectAndNext(3, true)">
-                    <label for="split">
-                        <img src="split_system_icon.png" alt="Split System Icon">
-                        <p>Split System</p>
+                    <input type="radio" id="roof" name="unitPlacement" value="Roof" onclick="selectAndNext(3, true)">
+                    <label for="roof">
+                        <img src="roof_icon.png" alt="Roof Icon">
+                        <p>Roof</p>
                     </label>
                 </div>
                 <div class="tile-option">
-                    <input type="radio" id="mini" name="unitType" value="Mini Split" onclick="selectAndNext(3, true)">
-                    <label for="mini">
-                        <img src="mini_split_icon.png" alt="Mini Split Icon">
-                        <p>Mini Split</p>
+                    <input type="radio" id="closet" name="unitPlacement" value="Closet" onclick="selectAndNext(3, true)">
+                    <label for="closet">
+                        <img src="closet_icon.png" alt="Closet Icon">
+                        <p>Closet</p>
                     </label>
                 </div>
                 <div class="tile-option">
-                    <input type="radio" id="packaged" name="unitType" value="Packaged System" onclick="selectAndNext(3, true)">
-                    <label for="packaged">
-                        <img src="packaged_system_icon.png" alt="Packaged System Icon">
-                        <p>Packaged System</p>
+                    <input type="radio" id="attic" name="unitPlacement" value="Attic" onclick="selectAndNext(3, true)">
+                    <label for="attic">
+                        <img src="attic_icon.png" alt="Attic Icon">
+                        <p>Attic</p>
                     </label>
                 </div>
             </div>
@@ -241,7 +260,26 @@
                 </div>
             </div>
             <button onclick="nextStep(4, false)">Back</button>
-            <button onclick="showResults()">Calculate</button>
+            <button onclick="nextStep(5, true)">Next</button>
+        </div>
+
+        <div id="step5" class="step">
+            <h2>5. Please complete the form so you can get an email of the estimate</h2>
+            <div class="form-container">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" placeholder="Enter your first name">
+
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" placeholder="Enter your last name">
+
+                <label for="phoneNumber">Phone Number</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number">
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email">
+            </div>
+            <button onclick="nextStep(5, false)">Back</button>
+            <button onclick="showResults()">Submit</button>
         </div>
 
         <div id="results" class="step">
@@ -275,7 +313,14 @@
                 const key = inputs[0].name;
                 const value = inputs[0].value;
                 selections[key] = value;
-                if (forward) nextStep(currentStep, forward);
+
+                // Skip Unit Placement if Packaged or Mini Split
+                if (key === "unitType" && (value === "Packaged System" || value === "Mini Split")) {
+                    nextStep(currentStep, true);
+                    nextStep(currentStep + 1, true);
+                } else if (forward) {
+                    nextStep(currentStep, forward);
+                }
             }
         }
 
@@ -292,7 +337,7 @@
         }
 
         function showResults() {
-            document.getElementById('step4').classList.remove('active');
+            document.getElementById('step5').classList.remove('active');
             document.getElementById('results').classList.add('active');
             // Populate results dynamically based on selections
             document.getElementById('result-type').innerText = selections.unitType || "N/A";
@@ -301,5 +346,6 @@
     </script>
 </body>
 </html>
+
 
 
