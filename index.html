@@ -1,350 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HVAC Pricing Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f9;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-        }
-        .step {
-            display: none;
-        }
-        .step.active {
-            display: block;
-        }
-        .radio-options {
-            margin: 15px 0;
-        }
-        .radio-option {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-        .radio-option input {
-            display: none;
-        }
-        .radio-option:hover, .radio-option input:checked + label {
-            border-color: #007BFF;
-            background-color: #e0f0ff;
-        }
-        .tile-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-        .tile-option {
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            text-align: center;
-            padding: 15px;
-            cursor: pointer;
-            transition: border-color 0.3s, background-color 0.3s;
-        }
-        .tile-option img {
-            max-width: 100%;
-            height: 100px;
-            object-fit: contain;
-        }
-        .tile-option input {
-            display: none;
-        }
-        .tile-option:hover, .tile-option input:checked + label {
-            border-color: #007BFF;
-            background-color: #e0f0ff;
-        }
-        button {
-            background-color: #007BFF;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            margin-top: 15px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            background: #e0ffe0;
-            border: 1px solid #b2ffb2;
-            border-radius: 4px;
-        }
-        .logo {
-            display: block;
-            margin: 0 auto 20px auto;
-            max-width: 150px;
-        }
-        .result-card {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        .result-card h2 {
-            margin-bottom: 10px;
-        }
-        .result-card ul {
-            list-style: none;
-            padding: 0;
-        }
-        .result-card ul li {
-            margin: 5px 0;
-            display: flex;
-            align-items: center;
-        }
-        .result-card ul li::before {
-            content: '\2714';
-            color: #28a745;
-            margin-right: 10px;
-        }
-        .form-container {
-            margin-top: 20px;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-        }
-        .form-container input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .form-container label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            display: block;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HVAC Quote Tool</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #app {
+      width: 100%;
+      max-width: 800px;
+      background: #fff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .question {
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .option {
+      padding: 15px;
+      background-color: #f1f1f1;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: left;
+      font-size: 16px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .option:hover, .active-option {
+      background-color: #cce4ff;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .input-group input {
+      width: 100%;
+      border: none;
+      padding: 10px;
+      font-size: 16px;
+      outline: none;
+      border-radius: 8px;
+    }
+
+    .input-group .icon {
+      margin-right: 10px;
+      font-size: 20px;
+      color: #007bff;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .back-btn {
+      background-color: #00aaff;
+    }
+
+    .back-btn:hover {
+      background-color: #0088cc;
+    }
+
+    .final-product {
+      display: none;
+    }
+
+    .active-final {
+      display: block;
+    }
+
+    .final-product p {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    .final-product button {
+      background-color: #28a745;
+    }
+
+    .final-product button:hover {
+      background-color: #218838;
+    }
+
+    .unit-size-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .unit-size-options label {
+      display: block;
+      padding: 10px;
+      background-color: #f1f1f1;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .unit-size-options label:hover {
+      background-color: #cce4ff;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <img src="6.webp" alt="HVAC Quote Logo" class="logo">
-        <h1>HVAC Pricing Calculator</h1>
 
-        <div id="step1" class="step active">
-            <h2>1. Select Square Footage</h2>
-            <div class="radio-options">
-                <div class="radio-option">
-                    <input type="radio" id="sq1" name="squareFootage" value="750">
-                    <label for="sq1">1.5 ton: 750 - 900 sq. ft.</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="sq2" name="squareFootage" value="1000">
-                    <label for="sq2">2 ton: 1,000 - 1,200 sq. ft.</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="sq3" name="squareFootage" value="1250">
-                    <label for="sq3">2.5 ton: 1,250 - 1,500 sq. ft.</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="sq4" name="squareFootage" value="1500">
-                    <label for="sq4">3 ton: 1,500 - 1,800 sq. ft.</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="sq5" name="squareFootage" value="1750">
-                    <label for="sq5">3.5 ton: 1,750 - 2,100 sq. ft.</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="sq6" name="squareFootage" value="2000">
-                    <label for="sq6">4 ton: 2,000 - 2,400 sq. ft.</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="sq7" name="squareFootage" value="2500">
-                    <label for="sq7">5 ton: 2,500 - 3,000 sq. ft.</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="sq8" name="squareFootage" value="4000">
-                    <label for="sq8">6 ton: 3,000+ sq. ft.</label>
-                </div>
-            </div>
-            <button onclick="nextStep(1, true)">Next</button>
-        </div>
-
-        <div id="step2" class="step">
-            <h2>2. What Type of Unit?</h2>
-            <div class="tile-options">
-                <div class="tile-option">
-                    <input type="radio" id="split" name="unitType" value="Split System" onclick="selectAndNext(2, true)">
-                    <label for="split">
-                        <img src="split_system_icon.png" alt="Split System Icon">
-                        <p>Split System</p>
-                    </label>
-                </div>
-                <div class="tile-option">
-                    <input type="radio" id="mini" name="unitType" value="Mini Split" onclick="selectAndNext(2, true)">
-                    <label for="mini">
-                        <img src="mini_split_icon.png" alt="Mini Split Icon">
-                        <p>Mini Split</p>
-                    </label>
-                </div>
-                <div class="tile-option">
-                    <input type="radio" id="packaged" name="unitType" value="Packaged System" onclick="selectAndNext(2, true)">
-                    <label for="packaged">
-                        <img src="packaged_system_icon.png" alt="Packaged System Icon">
-                        <p>Packaged System</p>
-                    </label>
-                </div>
-            </div>
-            <button onclick="nextStep(2, false)">Back</button>
-        </div>
-
-        <div id="step3" class="step">
-            <h2>3. Where is the Unit Placement?</h2>
-            <div class="tile-options">
-                <div class="tile-option">
-                    <input type="radio" id="roof" name="unitPlacement" value="Roof" onclick="selectAndNext(3, true)">
-                    <label for="roof">
-                        <img src="roof_icon.png" alt="Roof Icon">
-                        <p>Roof</p>
-                    </label>
-                </div>
-                <div class="tile-option">
-                    <input type="radio" id="closet" name="unitPlacement" value="Closet" onclick="selectAndNext(3, true)">
-                    <label for="closet">
-                        <img src="closet_icon.png" alt="Closet Icon">
-                        <p>Closet</p>
-                    </label>
-                </div>
-                <div class="tile-option">
-                    <input type="radio" id="attic" name="unitPlacement" value="Attic" onclick="selectAndNext(3, true)">
-                    <label for="attic">
-                        <img src="attic_icon.png" alt="Attic Icon">
-                        <p>Attic</p>
-                    </label>
-                </div>
-            </div>
-            <button onclick="nextStep(3, false)">Back</button>
-        </div>
-
-        <div id="step4" class="step">
-            <h2>4. How Many Units?</h2>
-            <div class="radio-options">
-                <div class="radio-option">
-                    <input type="radio" id="unit1" name="numberOfUnits" value="1">
-                    <label for="unit1">1 Unit</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="unit2" name="numberOfUnits" value="2">
-                    <label for="unit2">2 Units</label>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" id="unit3" name="numberOfUnits" value="3">
-                    <label for="unit3">3 Units</label>
-                </div>
-            </div>
-            <button onclick="nextStep(4, false)">Back</button>
-            <button onclick="nextStep(5, true)">Next</button>
-        </div>
-
-        <div id="step5" class="step">
-            <h2>5. Please complete the form so you can get an email of the estimate</h2>
-            <div class="form-container">
-                <label for="firstName">First Name</label>
-                <input type="text" id="firstName" name="firstName" placeholder="Enter your first name">
-
-                <label for="lastName">Last Name</label>
-                <input type="text" id="lastName" name="lastName" placeholder="Enter your last name">
-
-                <label for="phoneNumber">Phone Number</label>
-                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number">
-
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email">
-            </div>
-            <button onclick="nextStep(5, false)">Back</button>
-            <button onclick="showResults()">Submit</button>
-        </div>
-
-        <div id="results" class="step">
-            <h2>Recommended Product</h2>
-            <div class="result-card">
-                <h3 id="result-title">5 Ton Central AC Unit</h3>
-                <p><strong>Estimated Price:</strong> $7,000 - $12,000</p>
-                <p><strong>Type:</strong> <span id="result-type">Central AC Unit</span></p>
-                <p><strong>Efficiency:</strong> <span id="result-efficiency">High</span></p>
-                <h4>What’s Included:</h4>
-                <ul>
-                    <li>Removing existing HVAC system (if applicable)</li>
-                    <li>Install new unit per manufacturer specifications</li>
-                    <li>Install new ductwork or modify existing ducts</li>
-                    <li>Install new thermostat</li>
-                    <li>Test system for optimal performance</li>
-                    <li>Provide system startup and performance verification</li>
-                    <li>Clean up all job-related debris</li>
-                </ul>
-            </div>
-        </div>
-
+<div id="app">
+  <!-- Step 1 -->
+  <div class="question active" id="step1">
+    <h2>1. What type of system are you looking to install?</h2>
+    <div class="options">
+      <div class="option" onclick="nextStep(2, 'split')">🏠 Split System</div>
+      <div class="option" onclick="nextStep(2, 'package')">🏢 Package System</div>
+      <div class="option" onclick="nextStep(2, 'mini')">💨 Mini Split</div>
     </div>
+    <button class="back-btn" onclick="goBack(0)">Back</button>
+  </div>
 
-    <script>
-        const selections = {};
+  <!-- Step 2 -->
+  <div class="question" id="step2">
+    <h2>2. Where is the system getting installed?</h2>
+    <div class="options">
+      <div class="option" onclick="nextStep(3)">📍 Attic</div>
+      <div class="option" onclick="nextStep(3)">📍 Closet</div>
+      <div class="option" onclick="nextStep(3)">📍 Garage</div>
+    </div>
+    <button class="back-btn" onclick="goBack(1)">Back</button>
+  </div>
 
-        function selectAndNext(currentStep, forward) {
-            const inputs = document.querySelectorAll(`#step${currentStep} input:checked`);
-            if (inputs.length > 0) {
-                const key = inputs[0].name;
-                const value = inputs[0].value;
-                selections[key] = value;
+  <!-- Step 3 -->
+  <div class="question" id="step3">
+    <h2>3. What is the tonnage of your current system or the size of your home?</h2>
+    <div class="unit-size-options">
+      <label><input type="radio" name="tonnage" value="1.5" onclick="nextStep(4)" /> 1.5 ton: 750 - 900 sq. ft.</label>
+      <label><input type="radio" name="tonnage" value="2" onclick="nextStep(4)" /> 2 ton: 1,000 - 1,200 sq. ft.</label>
+      <label><input type="radio" name="tonnage" value="2.5" onclick="nextStep(4)" /> 2.5 ton: 1,250 - 1,500 sq. ft.</label>
+      <label><input type="radio" name="tonnage" value="3" onclick="nextStep(4)" /> 3 ton: 1,500 - 1,800 sq. ft.</label>
+      <label><input type="radio" name="tonnage" value="3.5" onclick="nextStep(4)" /> 3.5 ton: 1,750 - 2,100 sq. ft.</label>
+      <label><input type="radio" name="tonnage" value="4" onclick="nextStep(4)" /> 4 ton: 2,000 - 2,400 sq. ft.</label>
+      <label><input type="radio" name="tonnage" value="5" onclick="nextStep(4)" /> 5 ton: 2,500 - 3,000+ sq. ft.</label>
+    </div>
+    <button class="back-btn" onclick="goBack(2)">Back</button>
+  </div>
 
-                // Skip Unit Placement if Packaged or Mini Split
-                if (key === "unitType" && (value === "Packaged System" || value === "Mini Split")) {
-                    nextStep(currentStep, true);
-                    nextStep(currentStep + 1, true);
-                } else if (forward) {
-                    nextStep(currentStep, forward);
-                }
-            }
-        }
+  <!-- Step 4 -->
+  <div class="question" id="step4">
+    <h2>4. How many units are getting replaced?</h2>
+    <div class="options">
+      <div class="option" onclick="nextStep(5)">1 Unit</div>
+      <div class="option" onclick="nextStep(5)">2 Units</div>
+      <div class="option" onclick="nextStep(5)">3 Units</div>
+    </div>
+    <button class="back-btn" onclick="goBack(3)">Back</button>
+  </div>
 
-        function nextStep(currentStep, forward) {
-            const currentStepElement = document.getElementById(`step${currentStep}`);
-            const nextStepElement = document.getElementById(`step${currentStep + (forward ? 1 : -1)}`);
+  <!-- Step 5 (Form) -->
+  <div class="question" id="step5">
+    <h2>5. Please complete the form to get an estimate</h2>
+    <div class="input-group">
+      <span class="icon">👤</span>
+      <input type="text" placeholder="First Name" id="firstName">
+    </div>
+    <div class="input-group">
+      <span class="icon">👥</span>
+      <input type="text" placeholder="Last Name" id="lastName">
+    </div>
+    <div class="input-group">
+      <span class="icon">📞</span>
+      <input type="text" placeholder="Phone Number" id="phoneNumber">
+    </div>
+    <div class="input-group">
+      <span class="icon">✉️</span>
+      <input type="email" placeholder="Email" id="email">
+    </div>
+    <div class="button-container">
+      <button class="back-btn" onclick="goBack(4)">Back</button>
+      <button onclick="calculatePrice()">Calculate</button>
+    </div>
+  </div>
 
-            if (currentStepElement) {
-                currentStepElement.classList.remove('active');
-            }
-            if (nextStepElement) {
-                nextStepElement.classList.add('active');
-            }
-        }
+  <!-- Final Product Page -->
+  <div class="final-product" id="finalProduct">
+    <h2>Recommended Product</h2>
+    <p>5 Ton Central AC Unit</p>
+    <p>Estimated Price: $7,000 - $12,000</p>
+    <button>Book an Appointment</button>
+  </div>
+</div>
 
-        function showResults() {
-            document.getElementById('step5').classList.remove('active');
-            document.getElementById('results').classList.add('active');
-            // Populate results dynamically based on selections
-            document.getElementById('result-type').innerText = selections.unitType || "N/A";
-            document.getElementById('result-efficiency').innerText = "High Efficiency";
-        }
-    </script>
+<script>
+  let currentStep = 1;
+  let selections = [];
+
+  function nextStep(step, selection = null) {
+    document.getElementById('step' + currentStep).classList.remove('active');
+    if (selection) selections.push(selection);
+    currentStep = step;
+    document.getElementById('step' + currentStep).classList.add('active');
+  }
+
+  function goBack(step) {
+    document.getElementById('step' + currentStep).classList.remove('active');
+    currentStep = step;
+    document.getElementById('step' + currentStep).classList.add('active');
+  }
+
+  function calculatePrice() {
+    document.getElementById('step5').classList.remove('active');
+    document.getElementById('finalProduct').classList.add('active');
+  }
+</script>
+
 </body>
+</html>
+
 </html>
 
 
